@@ -1,2 +1,2 @@
-rootProject.name = "juxt-code-interview"
+rootProject.name = "juxt-interview-2022"
 
