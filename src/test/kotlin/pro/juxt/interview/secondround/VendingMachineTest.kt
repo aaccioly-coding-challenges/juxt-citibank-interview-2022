@@ -7,7 +7,7 @@ class VendingMachineTest {
 
     @Test
     fun `can be initialized with coins`() {
-        val coinTypes = setOf<Int>(1, 2, 5, 10, 20, 50, 100, 200)
+        val coinTypes = setOf(1, 2, 5, 10, 20, 50, 100, 200)
 
         val vendingMachine = VendingMachine(coinTypes)
 
@@ -17,7 +17,7 @@ class VendingMachineTest {
 
     @Test
     fun `can compute optimal change`() {
-        val coinTypes = setOf<Int>(1, 2, 5, 10, 20, 50, 100, 200)
+        val coinTypes = setOf(1, 2, 5, 10, 20, 50, 100, 200)
         val changeToGive = 500
 
         val vendingMachine = VendingMachine(coinTypes)
