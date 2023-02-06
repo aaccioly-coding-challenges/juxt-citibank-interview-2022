@@ -1,6 +1,6 @@
 package pro.juxt.interview.firstround.model
 
-import org.assertj.core.api.Assertions
+import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 
 internal class PlayerTest {
@@ -12,7 +12,7 @@ internal class PlayerTest {
 
         player.draw(deck.firstCard())
 
-        Assertions.assertThat(player.handValue()).isEqualTo(2)
+        player.handValue() shouldBe 2
     }
 
     @Test
@@ -21,7 +21,7 @@ internal class PlayerTest {
 
         player.draw(Card(Suit.SPADES, FaceValue.ACE))
 
-        Assertions.assertThat(player.handValue()).isEqualTo(11)
+        player.handValue() shouldBe 11
     }
 
     @Test
@@ -31,6 +31,6 @@ internal class PlayerTest {
         player.draw(Card(Suit.SPADES, FaceValue.ACE))
         player.draw(Card(Suit.DIAMONDS, FaceValue.ACE))
 
-        Assertions.assertThat(player.handValue()).isEqualTo(12)
+        player.handValue() shouldBe 12
     }
 }

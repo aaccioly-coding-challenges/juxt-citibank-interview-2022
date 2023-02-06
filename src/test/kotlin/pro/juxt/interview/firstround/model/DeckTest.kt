@@ -1,6 +1,7 @@
 package pro.juxt.interview.firstround.model
 
-import org.assertj.core.api.Assertions.assertThat
+import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 
 internal class DeckTest {
@@ -9,13 +10,14 @@ internal class DeckTest {
     fun `has 52 cards`() {
         val deck = Deck()
 
-        assertThat(deck.cards).hasSize(52)
+        deck.cards shouldHaveSize 52
     }
 
     @Test
     fun `can have a card drawn from it`() {
         val deck = Deck()
         val card: Card = deck.firstCard()
-        assertThat(card).isEqualTo(Card(Suit.DIAMONDS, FaceValue.TWO))
+
+        card shouldBe Card(Suit.DIAMONDS, FaceValue.TWO)
     }
 }
