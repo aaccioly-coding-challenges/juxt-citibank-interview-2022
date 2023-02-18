@@ -4,14 +4,8 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
-    # Add reviewers
-    reviewers:
-      - "aaccioly"
 
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
-    # Add reviewers
-    reviewers:
-      - "aaccioly"
