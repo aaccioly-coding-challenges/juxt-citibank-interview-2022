@@ -5,26 +5,52 @@ import org.junit.jupiter.api.Test
 
 class VendingMachineTest {
 
+     companion object{
+         private val canonicalCoinSystem = setOf(
+             Coin(1),
+             Coin(2),
+             Coin(5),
+             Coin(10),
+             Coin(20),
+             Coin(50),
+             Coin(100),
+             Coin(200)
+         )
+     }
+
+
     @Test
     fun `can be initialized with coins`() {
-        val coinTypes = setOf(1, 2, 5, 10, 20, 50, 100, 200)
 
-        val vendingMachine = VendingMachine(coinTypes)
+        val vendingMachine = VendingMachine(canonicalCoinSystem)
 
-        val expectedDenominations = listOf(200, 100, 50, 20, 10, 5, 2, 1)
-        vendingMachine.availableDenominations shouldBe expectedDenominations
+        val expectedDenominations = listOf(
+            Coin(200),
+            Coin(100),
+            Coin(50),
+            Coin(20),
+            Coin(10),
+            Coin(5),
+            Coin(2),
+            Coin(1)
+        )
+
+        vendingMachine.availableCoins shouldBe expectedDenominations
     }
 
     @Test
     fun `can compute optimal change`() {
-        val coinTypes = setOf(1, 2, 5, 10, 20, 50, 100, 200)
-        val changeToGive = 500
+        val changeToGive = Amount(500)
 
-        val vendingMachine = VendingMachine(coinTypes)
+        val vendingMachine = VendingMachine(canonicalCoinSystem)
         val change = vendingMachine.dispenseChange(changeToGive)
 
-        val expectChange = mapOf(200 to 2, 100 to 1)
-        change shouldBe expectChange
+        val expectedChange = mapOf(
+            Coin(200) to Amount(2),
+            Coin(100) to Amount(1)
+        )
+
+        change shouldBe expectedChange
     }
 
 }

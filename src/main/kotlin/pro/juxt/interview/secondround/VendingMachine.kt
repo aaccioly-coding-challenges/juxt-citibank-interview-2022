@@ -1,17 +1,31 @@
 package pro.juxt.interview.secondround
 
-class VendingMachine(coinTypes: Set<Int>) {
+@JvmInline
+value class Coin(val denomination: Int) {
+    init {
+        require(denomination > 0) { "Coin face value must be positive" }
+    }
+}
 
-    val availableDenominations = coinTypes.sortedDescending()
+@JvmInline
+value class Amount(val value: Int) {
+    init {
+        require(value > 0) { "Amount must be positive" }
+    }
+}
 
-    fun dispenseChange(changeToGive: Int): Map<Int, Int> {
-        var remainingChange = changeToGive
-        val change = mutableMapOf<Int, Int>()
-        for (faceValue in availableDenominations) {
-            val numberOfCoinsForDenomination = remainingChange / faceValue
+class VendingMachine(coinTypes: Set<Coin>) {
+
+    val availableCoins = coinTypes.sortedByDescending { it.denomination }
+
+    fun dispenseChange(changeToGive: Amount): Map<Coin, Amount> {
+        var remainingChange = changeToGive.value
+        val change = mutableMapOf<Coin, Amount>()
+        for (coin in availableCoins) {
+            val numberOfCoinsForDenomination = remainingChange / coin.denomination
             if (numberOfCoinsForDenomination > 0) {
-                change[faceValue] = numberOfCoinsForDenomination
-                remainingChange -= faceValue * numberOfCoinsForDenomination
+                change[coin] = Amount(numberOfCoinsForDenomination)
+                remainingChange -= coin.denomination * numberOfCoinsForDenomination
             }
         }
 
