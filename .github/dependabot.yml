@@ -7,3 +7,11 @@ updates:
     # Add reviewers
     reviewers:
       - "aaccioly"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    # Add reviewers
+    reviewers:
+      - "aaccioly"
