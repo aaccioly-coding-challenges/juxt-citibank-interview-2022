@@ -82,3 +82,5 @@ dynamic programming solution.
 2. AssertJ was replaced with Kotest core assertions
 3. The project was renamed to reflect the repository name
 4. I wrote this README with my recollection of the events, so it might not be 100% accurate
+5. I've added GitHub Actions to run the tests on every push and pull request
+6. Dependabot was enabled to keep dependencies up-to-date
