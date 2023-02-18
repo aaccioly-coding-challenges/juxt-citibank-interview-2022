@@ -10,26 +10,33 @@ value class Coin(val denomination: Int) {
 @JvmInline
 value class Amount(val value: Int) {
     init {
-        require(value > 0) { "Amount must be positive" }
+        require(value >= 0) { "Amount must be positive" }
     }
+}
+
+data class Change(val coins: Map<Coin, Amount>, val remainingChange: Amount) {
+    val completeChange: Boolean = remainingChange.value == 0
 }
 
 class VendingMachine(coinTypes: Set<Coin>) {
 
     val availableCoins = coinTypes.sortedByDescending { it.denomination }
 
-    fun dispenseChange(changeToGive: Amount): Map<Coin, Amount> {
+    fun dispenseChange(changeToGive: Amount): Change {
         var remainingChange = changeToGive.value
-        val change = mutableMapOf<Coin, Amount>()
+        val changeMap = mutableMapOf<Coin, Amount>()
         for (coin in availableCoins) {
             val numberOfCoinsForDenomination = remainingChange / coin.denomination
             if (numberOfCoinsForDenomination > 0) {
-                change[coin] = Amount(numberOfCoinsForDenomination)
+                changeMap[coin] = Amount(numberOfCoinsForDenomination)
                 remainingChange -= coin.denomination * numberOfCoinsForDenomination
+            }
+            if (remainingChange == 0) {
+                break
             }
         }
 
-        return change
+        return Change(changeMap, Amount(remainingChange))
     }
 
 }
