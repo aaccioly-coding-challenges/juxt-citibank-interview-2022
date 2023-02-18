@@ -20,7 +20,7 @@ kotlin {
 dependencies {
     testImplementation(platform("org.junit:junit-bom:5.9.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")
-    testImplementation("io.kotest:kotest-assertions-core-jvm:5.5.4")
+    testImplementation("io.kotest:kotest-assertions-core-jvm:5.5.5")
 }
 
 tasks.getByName<Test>("test") {
