@@ -85,4 +85,4 @@ dynamic programming solution.
 5. I've added GitHub Actions to run the tests on every push and pull request
 6. Dependabot was enabled to keep dependencies up-to-date
 7. Added value classes for `Coin` and `Amount`
-8. Enalbed Gradle Build Scans
+8. Enabled Gradle Build Scans
