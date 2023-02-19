@@ -87,4 +87,6 @@ dynamic programming solution.
 7. Added value classes for `Coin` and `Amount`
 8. Enabled Gradle Build Scans
 9. Added support for partial change-making
+10. Added support for change-making for non-canonical coin systems
+11. 
 
