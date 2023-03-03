@@ -88,5 +88,4 @@ dynamic programming solution.
 8. Enabled Gradle Build Scans
 9. Added support for partial change-making
 10. Added support for change-making for non-canonical coin systems
-11. 
 
