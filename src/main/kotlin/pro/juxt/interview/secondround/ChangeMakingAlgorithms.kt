@@ -1,6 +1,8 @@
 package pro.juxt.interview.secondround
 
-internal fun greedy(coins: List<Coin>, changeToGive: Amount): AmountInCoins {
+typealias ChangeMaker = (coins: List<Coin>, changeToGive: Amount) -> Change
+
+val greedy: ChangeMaker = { coins, changeToGive ->
     var remainingChange = changeToGive.value
     val changeMap = mutableMapOf<Coin, Amount>()
     for (coin in coins.reversed()) {
@@ -14,11 +16,10 @@ internal fun greedy(coins: List<Coin>, changeToGive: Amount): AmountInCoins {
         }
     }
 
-    return AmountInCoins(changeMap, Amount(remainingChange))
+    Change(changeMap, Amount(remainingChange))
 }
 
-internal fun optimal(coins: List<Coin>, changeToGive: Amount): AmountInCoins {
-    // Dynamic programming solution to the coin change problem
+val dynamicProgramming: ChangeMaker = { coins, changeToGive ->
     val changeMap = mutableMapOf<Coin, Amount>()
     val numberOfCoins = Array(changeToGive.value + 1) { Int.MAX_VALUE }
     val lastCoin = Array(changeToGive.value + 1) { 0 }
@@ -37,8 +38,11 @@ internal fun optimal(coins: List<Coin>, changeToGive: Amount): AmountInCoins {
         changeMap[coin] = changeMap.getOrDefault(coin, Amount(0)) + Amount(1)
         remainingChange -= coin.denomination
     }
-    return AmountInCoins(changeMap, Amount(remainingChange))
+
+    Change(changeMap, Amount(remainingChange))
 }
+
+val optimal = dynamicProgramming
 
 @JvmInline
 value class Coin(val denomination: Int) {
@@ -56,6 +60,6 @@ value class Amount(val value: Int) {
     operator fun plus(other: Amount): Amount = Amount(value + other.value)
 }
 
-data class AmountInCoins(val coins: Map<Coin, Amount>, val remaining: Amount) {
+data class Change(val coins: Map<Coin, Amount>, val remaining: Amount) {
     val complete: Boolean = remaining.value == 0
 }

@@ -8,7 +8,7 @@ enum class CoinSystemType {
     AUTO
 }
 
-sealed class CoinSystem(val coins: List<Coin>) {
+sealed class CoinSystem(val coins: List<Coin>, private val changeMakingAlgorithm: ChangeMaker) {
 
     companion object {
         @JvmStatic
@@ -16,13 +16,13 @@ sealed class CoinSystem(val coins: List<Coin>) {
 
             val coins: List<Coin> = coinSet.sortedBy { it.denomination }
 
-            fun detectIfCoinSystemIsCanonical(): Boolean {
+            fun coinSystemIsCanonical(): Boolean {
                 val maxCoin = coins.last()
                 for (value in 1..2 * maxCoin.denomination) {
                     val amount = Amount(value)
                     val optimal = optimal(coins, amount)
                     val greedy = greedy(coins, amount)
-                    if (optimal != greedy) {
+                    if (greedy != optimal) {
                         return false
                     }
                 }
@@ -32,7 +32,7 @@ sealed class CoinSystem(val coins: List<Coin>) {
             return when (type) {
                 CANONICAL -> CanonicalCoinSystem(coins)
                 NON_CANONICAL -> NonCanonicalCoinSystem(coins)
-                AUTO -> if (detectIfCoinSystemIsCanonical()) {
+                AUTO -> if (coinSystemIsCanonical()) {
                     CanonicalCoinSystem(coins)
                 } else {
                     NonCanonicalCoinSystem(coins)
@@ -45,17 +45,11 @@ sealed class CoinSystem(val coins: List<Coin>) {
         require(coins.isNotEmpty()) { "Coin system must contain at least one coin" }
     }
 
-    abstract fun makeAmountInCoins(amount: Amount): AmountInCoins
-}
-
-class CanonicalCoinSystem(coins: List<Coin>) : CoinSystem(coins) {
-    override fun makeAmountInCoins(amount: Amount): AmountInCoins {
-        return greedy(coins, amount)
+    fun makeChange(amount: Amount): Change {
+        return changeMakingAlgorithm(coins, amount)
     }
 }
 
-class NonCanonicalCoinSystem(coins: List<Coin>) : CoinSystem(coins) {
-    override fun makeAmountInCoins(amount: Amount): AmountInCoins {
-        return optimal(coins, amount)
-    }
-}
+class CanonicalCoinSystem(coins: List<Coin>) : CoinSystem(coins, greedy)
+class NonCanonicalCoinSystem(coins: List<Coin>) : CoinSystem(coins, dynamicProgramming)
+
