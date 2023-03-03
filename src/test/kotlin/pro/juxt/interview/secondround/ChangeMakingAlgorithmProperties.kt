@@ -3,6 +3,7 @@ package pro.juxt.interview.secondround
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.inspectors.shouldForAtLeastOne
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
 import io.kotest.property.Arb
 import io.kotest.property.arbitrary.map
 import io.kotest.property.arbitrary.positiveInt
@@ -30,6 +31,25 @@ class ChangeMakingAlgorithmProperties : StringSpec({
                 val coins = coinSystem.coins
                 greedy(coins, amount) shouldBe optimal(coins, amount)
             }
+        }
+    }
+
+    "greedy algorithm isn't optimal for at least one amount in a non-canonical coin system" {
+        checkAll(
+            Arb.set(Arb.positiveInt(max = 15).map { Coin(it) }, range = 1..10),
+        ) { coinSet ->
+
+            val coinSystem = CoinSystem.create(coinSet)
+
+            assume(coinSystem is NonCanonicalCoinSystem)
+
+            val coins = coinSystem.coins
+            (1..2 * coins.last().denomination)
+                .map { Amount(it) }
+                .shouldForAtLeastOne { amount ->
+                    greedy(coins, amount) shouldNotBe optimal(coins, amount)
+                }
+
         }
     }
 })
