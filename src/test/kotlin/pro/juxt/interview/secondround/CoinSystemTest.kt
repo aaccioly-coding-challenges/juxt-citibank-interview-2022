@@ -1,7 +1,6 @@
 package pro.juxt.interview.secondround
 
-import io.kotest.matchers.booleans.shouldBeFalse
-import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.types.shouldBeTypeOf
 import org.junit.jupiter.api.Test
 import pro.juxt.interview.secondround.CoinSystemType.*
 
@@ -18,9 +17,9 @@ class CoinSystemTest {
             Coin(100),
         )
 
-        val coinSystem = CoinSystem(canonicalCoinSet)
+        val coinSystem = CoinSystem.create(canonicalCoinSet)
 
-        coinSystem.isCanonical.shouldBeTrue()
+        coinSystem.shouldBeTypeOf<CanonicalCoinSystem>()
     }
 
     @Test
@@ -33,23 +32,23 @@ class CoinSystemTest {
             Coin(25)
         )
 
-        val coinSystem = CoinSystem(nonCanonicalCoinSet)
+        val coinSystem = CoinSystem.create(nonCanonicalCoinSet)
 
-        coinSystem.isCanonical.shouldBeFalse()
+        coinSystem.shouldBeTypeOf<NonCanonicalCoinSystem>()
     }
 
     @Test
     fun `can manually specify a coin system type`() {
         val coins = setOf(Coin(1))
 
-        val coinSystemSetToAuto = CoinSystem(coins, type = AUTO)
-        coinSystemSetToAuto.isCanonical.shouldBeTrue()
+        val coinSystemSetToAuto = CoinSystem.create(coins, type = AUTO)
+        coinSystemSetToAuto.shouldBeTypeOf<CanonicalCoinSystem>()
 
-        val coinSystemSetToCanonical = CoinSystem(coins, type = CANONICAL)
-        coinSystemSetToCanonical.isCanonical.shouldBeTrue()
+        val coinSystemSetToCanonical = CoinSystem.create(coins, type = CANONICAL)
+        coinSystemSetToCanonical.shouldBeTypeOf<CanonicalCoinSystem>()
 
-        val coinSystemSetToNonCanonical = CoinSystem(coins, type = NON_CANONICAL)
-        coinSystemSetToNonCanonical.isCanonical.shouldBeFalse()
+        val coinSystemSetToNonCanonical = CoinSystem.create(coins, type = NON_CANONICAL)
+        coinSystemSetToNonCanonical.shouldBeTypeOf<NonCanonicalCoinSystem>()
     }
 
 }

@@ -11,7 +11,7 @@ import pro.juxt.interview.secondround.CoinSystemType.*
 class VendingMachineTest {
 
     companion object {
-        private val canonicalCoinSystem = CoinSystem(
+        private val canonicalCoinSystem = CoinSystem.create(
             setOf(
                 Coin(1),
                 Coin(2),
@@ -24,7 +24,7 @@ class VendingMachineTest {
             )
         )
 
-        private val nonCanonicalCoinSystem = CoinSystem(
+        private val nonCanonicalCoinSystem = CoinSystem.create(
             setOf(
                 Coin(5),
                 Coin(10),
@@ -102,7 +102,7 @@ class VendingMachineTest {
         fun `allows partial change for canonical system`() {
             val changeToGive = Amount(8)
 
-            val vendingMachine = VendingMachine(CoinSystem(setOf(Coin(5)), type = CANONICAL))
+            val vendingMachine = VendingMachine(CoinSystem.create(setOf(Coin(5)), type = CANONICAL))
             val change = vendingMachine.dispenseChange(changeToGive)
 
             val expectedCoins = mapOf(

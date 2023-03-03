@@ -9,23 +9,24 @@ import io.kotest.property.arbitrary.set
 import io.kotest.property.checkAll
 
 @Suppress("unused")
-class CoinSystemProperties : StringSpec({
+class ChangeMakingAlgorithmProperties : StringSpec({
 
     "the greedy algorithm should be optimal for a canonical coin system" {
         checkAll(
             Arb.set(Arb.positiveInt(max = 10).map { Coin(it) }, range = 1..10),
             Arb.positiveInt(max = 200).map { Amount(it) },
-        ) { coins, amount ->
+        ) { coinSet, amount ->
 
-            val coinSystem = CoinSystem(coins)
+            val coinSystem = CoinSystem.create(coinSet)
 
-            when (coinSystem.isCanonical) {
-                true -> collect(CoinSystemType.CANONICAL)
-                false -> collect(CoinSystemType.NON_CANONICAL)
+            when (coinSystem) {
+                is CanonicalCoinSystem -> collect(CoinSystemType.CANONICAL)
+                is NonCanonicalCoinSystem -> collect(CoinSystemType.NON_CANONICAL)
             }
 
-            if (coinSystem.isCanonical) {
-                coinSystem.greedy(amount) shouldBe coinSystem.optimal(amount)
+            if (coinSystem is CanonicalCoinSystem) {
+                val coins = coinSystem.coins
+                greedy(coins, amount) shouldBe optimal(coins, amount)
             }
         }
     }
