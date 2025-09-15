@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "2.2.10"
+    kotlin("jvm") version "2.2.20"
     java
     id("com.adarshr.test-logger") version "4.0.0"
 }
