@@ -20,7 +20,7 @@ kotlin {
 dependencies {
     val kotestVersion = "6.0.3"
 
-    testImplementation(platform("org.junit:junit-bom:5.13.4"))
+    testImplementation(platform("org.junit:junit-bom:6.0.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
 
     testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
